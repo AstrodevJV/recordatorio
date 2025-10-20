@@ -1,9 +1,6 @@
 package com.example.recordatorio.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
@@ -15,21 +12,29 @@ import java.util.Date;
 @ToString
 
 @Entity
+@Table(name = "email_model")
 public class EmailModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name= "sender",nullable = false)
     private String sender;
 
+    @Column(name = "recipient",nullable = false)
     private String recipient;
 
+    @Column(name = "subject",nullable = false)
     private String subject;
 
+    @Column(name = "body",nullable = false)
     private String body;
 
-    private Date scheduled;
+    @Column(name = "scheduled_at",nullable = false)
+    private Date scheduledAt;
 
+    @Column(name = "send",nullable = true)
+    @Enumerated(EnumType.STRING)
     private State state;
 
 }
