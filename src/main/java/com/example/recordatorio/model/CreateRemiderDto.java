@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -32,7 +33,7 @@ public class CreateRemiderDto {
     private String body;
 
     @NotBlank(message = "No puede estar bacio")
-    private Date scheduled;
+    private LocalDateTime scheduled;
 
 
     @Enumerated(EnumType.STRING)

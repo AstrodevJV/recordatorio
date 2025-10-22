@@ -12,6 +12,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -28,22 +29,22 @@ public class EmailService {
     }
 
     @Scheduled(fixedDelay = 60000)
-    @Transactional
     public void sendScheduledEmails() {
-        Date now = new Date();
-
+        logger.info("Ejecutando verificación de correos pendientes...");
+        LocalDateTime now = LocalDateTime.now();
 
         List<EmailModel> pendingEmails = emailRepository
-                .findByStateAndScheduledAtBeforeForUpdate(State.pending, now);
+                .findByStateAndScheduledAtBefore(State.pending, now);
 
         for (EmailModel email : pendingEmails) {
             try {
                 sendEmail(email);
                 email.setState(State.sent);
-                emailRepository.save(email);
                 logger.info("Email enviado a {}", email.getRecipient());
             } catch (Exception e) {
+                email.setState(State.failed);
                 logger.error("Error al enviar email a {}: {}", email.getRecipient(), e.getMessage());
+            } finally {
                 emailRepository.save(email);
             }
         }

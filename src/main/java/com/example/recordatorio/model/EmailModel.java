@@ -3,6 +3,7 @@ package com.example.recordatorio.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -31,7 +32,7 @@ public class EmailModel {
     private String body;
 
     @Column(name = "scheduled_at",nullable = false)
-    private Date scheduledAt;
+    private LocalDateTime scheduledAt;
 
     @Column(name = "send",nullable = true)
     @Enumerated(EnumType.STRING)
